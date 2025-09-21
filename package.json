@@ -1,0 +1,40 @@
+{
+  "name": "virtualdoc-backend",
+  "version": "1.0.0",
+  "description": "Production backend API for VirtualDoc application with user authentication, health data management, and StreamChat integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo 'Build completed'",
+    "vercel-build": "echo 'Vercel build completed'"
+  },
+  "keywords": [
+    "virtualdoc",
+    "healthcare",
+    "medical",
+    "api",
+    "authentication",
+    "mongodb",
+    "express",
+    "streamchat",
+    "consultation"
+  ],
+  "author": "Nathan Richard",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "cors": "^2.8.5",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "dotenv": "^16.3.1",
+    "stream-chat": "^8.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
