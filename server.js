@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
 });
 
 // MongoDB connection
-const MONGODB_URI = 'mongodb+srv://nrchinoz49_db_user:cc8Ajtg8IUb3baW1@clusterdoc.xa5fxvx.mongodb.net/doctorweb?retryWrites=true&w=majority&appName=Clusterdoc';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://nrchinoz49_db_user:cc8Ajtg8IUb3baW1@clusterdoc.xa5fxvx.mongodb.net/doctorweb?retryWrites=true&w=majority&appName=Clusterdoc';
 
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
