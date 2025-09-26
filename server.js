@@ -26,6 +26,25 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Doctor Web API Server',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      auth: {
+        signup: 'POST /api/auth/signup',
+        signin: 'POST /api/auth/signin',
+        profile: 'GET /api/auth/profile',
+        updateProfile: 'PUT /api/auth/profile',
+        updateMedicalInfo: 'PUT /api/auth/update-medical-info'
+      },
+      database: '/api/test-db'
+    }
+  });
+});
+
 // MongoDB connection
 const MONGODB_URI = 'mongodb+srv://nrchinoz49_db_user:cc8Ajtg8IUb3baW1@clusterdoc.xa5fxvx.mongodb.net/doctorweb?retryWrites=true&w=majority&appName=Clusterdoc';
 
