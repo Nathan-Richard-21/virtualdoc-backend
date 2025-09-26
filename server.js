@@ -30,7 +30,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Doctor Web API Server',
-    version: '1.0.0',
+    version: '1.0.1',
     endpoints: {
       health: '/api/health',
       auth: {
@@ -48,16 +48,26 @@ app.get('/', (req, res) => {
 // MongoDB connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://nrchinoz49_db_user:cc8Ajtg8IUb3baW1@clusterdoc.xa5fxvx.mongodb.net/doctorweb?retryWrites=true&w=majority&appName=Clusterdoc';
 
-mongoose.connect(MONGODB_URI, {
+// Connection options optimized for serverless
+const mongooseOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-})
-.then(() => {
-  console.log('✅ Connected to MongoDB successfully');
-})
-.catch((error) => {
-  console.error('❌ MongoDB connection error:', error);
-});
+  maxPoolSize: 10,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+  bufferCommands: false
+};
+
+// Connect to MongoDB
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(MONGODB_URI, mongooseOptions)
+    .then(() => {
+      console.log('✅ Connected to MongoDB successfully');
+    })
+    .catch((error) => {
+      console.error('❌ MongoDB connection error:', error);
+    });
+}
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -476,14 +486,27 @@ app.get('/api/test-db', async (req, res) => {
       3: 'disconnecting'
     };
 
-    res.json({
+    // Additional debugging info
+    const connectionInfo = {
       database: states[dbState],
-      message: dbState === 1 ? 'Database connected successfully' : 'Database connection issue'
-    });
+      message: dbState === 1 ? 'Database connected successfully' : 'Database connection issue',
+      mongoUri: process.env.MONGODB_URI ? 'Set' : 'Not set',
+      connectionHost: mongoose.connection.host || 'Not connected',
+      connectionName: mongoose.connection.name || 'No database name'
+    };
+
+    // Try to ping the database if connected
+    if (dbState === 1) {
+      await mongoose.connection.db.admin().ping();
+      connectionInfo.ping = 'Success';
+    }
+
+    res.json(connectionInfo);
   } catch (error) {
     res.status(500).json({
       message: 'Database connection test failed',
-      error: error.message
+      error: error.message,
+      mongoUri: process.env.MONGODB_URI ? 'Set' : 'Not set'
     });
   }
 });
