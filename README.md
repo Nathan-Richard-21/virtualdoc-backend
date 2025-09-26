@@ -1,199 +1,53 @@
-# VirtualDoc Backend API
+# Doctor Web - MERN Stack Backend
 
-Production-ready backend API for the VirtualDoc application, providing comprehensive user authentication, health data management, and real-time consultation features with StreamChat integration.
+This is the backend API for the Doctor Web application, providing user authentication and health data management.
 
-## 🚀 Features
+## Features
 
-- **User Authentication**: JWT-based secure authentication with bcrypt password hashing
-- **Health Data Management**: Complete patient profile and medical history management
-- **Real-time Chat**: StreamChat integration for patient-doctor consultations
-- **MongoDB Integration**: Robust database connectivity with connection pooling
-- **CORS Protection**: Production-ready CORS configuration
-- **Security Headers**: Comprehensive security middleware
-- **Multi-language Support**: Internationalization ready
-- **Production Optimized**: Environment-based configuration and error handling
+- User authentication (signup/login) with JWT tokens
+- Password hashing with bcrypt
+- MongoDB integration for user data storage
+- Health information management
+- Multi-language support
+- CORS enabled for frontend integration
 
-## 📋 Prerequisites
+## Prerequisites
 
-- Node.js (v18 or higher)
-- MongoDB Atlas account
-- StreamChat account (optional, for chat features)
-- Vercel account (for deployment)
+- Node.js (v16 or higher)
+- MongoDB Atlas account (connection string provided)
+- npm or yarn package manager
 
-## 🛠️ Installation
+## Installation
 
-### Local Development
-
-1. **Clone the repository:**
+1. Navigate to the backend directory:
 ```bash
-git clone https://github.com/Nathan-Richard-21/virtualdoc-backend.git
-cd virtualdoc-backend
+cd backend
 ```
 
-2. **Install dependencies:**
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. **Environment Setup:**
-```bash
-cp .env.example .env
-# Edit .env with your configuration values
-```
+3. Environment variables are already configured in `.env` file with the MongoDB connection string.
 
-4. **Start development server:**
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
-The server will start on `http://localhost:5001`
+The server will start on `http://localhost:5000`
 
-### Production Deployment (Vercel)
-
-1. **Push to GitHub:**
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/Nathan-Richard-21/virtualdoc-backend.git
-git push -u origin main
-```
-
-2. **Deploy to Vercel:**
-   - Import project from GitHub in Vercel dashboard
-   - Configure environment variables in Vercel
-   - Deploy automatically
-
-3. **Required Environment Variables for Production:**
-```
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_secure_jwt_secret
-STREAM_CHAT_API_KEY=your_stream_api_key
-STREAM_CHAT_API_SECRET=your_stream_api_secret
-NODE_ENV=production
-```
-
-## 📡 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/auth/signup` - Register a new user
-- `POST /api/auth/signin` - User login  
+- `POST /api/auth/signin` - Login user
 - `GET /api/auth/profile` - Get user profile (protected)
 - `PUT /api/auth/profile` - Update user profile (protected)
 
-### StreamChat Integration
-- `POST /api/stream-token` - Generate chat authentication token
-- `POST /api/create-channel` - Create consultation channel
-- `GET /api/stream-health` - StreamChat service status
-
-### Health & Monitoring
-- `GET /api/health` - API health check
-- `GET /api/test-db` - Database connection test
-- `GET /` - API information and documentation
-
-## 🔧 Configuration
-
-### Environment Variables
-
-| Variable | Description | Required | Default |
-|----------|-------------|----------|---------|
-| `PORT` | Server port | No | 5001 |
-| `NODE_ENV` | Environment mode | Yes | development |
-| `MONGODB_URI` | MongoDB connection string | Yes | - |
-| `JWT_SECRET` | JWT signing secret | Yes | - |
-| `STREAM_CHAT_API_KEY` | StreamChat API key | No | - |
-| `STREAM_CHAT_API_SECRET` | StreamChat API secret | No | - |
-
-### CORS Configuration
-
-The API is configured to accept requests from:
-- `http://localhost:5173` (Development)
-- `https://virtual-doc-smoky.vercel.app` (Production)
-- `https://virtual-doc.vercel.app` (Production)
-
-## 🔒 Security Features
-
-- **JWT Authentication**: Secure token-based authentication
-- **Password Hashing**: bcrypt with salt rounds
-- **CORS Protection**: Origin-based request filtering
-- **Security Headers**: XSS, content type, and frame protection
-- **Input Validation**: Request data validation and sanitization
-- **Environment Variables**: Secure configuration management
-
-## 📊 Database Schema
-
-### User Model
-```javascript
-{
-  firstName: String (required),
-  lastName: String (required),
-  email: String (required, unique),
-  password: String (required, hashed),
-  phone: String,
-  dateOfBirth: Date,
-  gender: String (enum),
-  bloodType: String (enum),
-  height: String,
-  weight: String,
-  address: Object,
-  emergencyContact: Object,
-  medicalHistory: Object,
-  createdAt: Date,
-  updatedAt: Date
-}
-```
-
-## 🚨 Error Handling
-
-The API includes comprehensive error handling:
-- **400**: Bad Request (validation errors)
-- **401**: Unauthorized (authentication required)
-- **403**: Forbidden (insufficient permissions)
-- **404**: Not Found (resource not found)
-- **500**: Internal Server Error (server issues)
-
-## 🧪 Testing
-
-### Health Check
-```bash
-curl https://your-api-domain.vercel.app/api/health
-```
-
-### Database Connection
-```bash
-curl https://your-api-domain.vercel.app/api/test-db
-```
-
-## 📈 Monitoring
-
-Monitor your deployment:
-- Vercel dashboard for deployment logs
-- MongoDB Atlas for database metrics
-- StreamChat dashboard for chat analytics
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-For support and questions:
-- Create an issue in the GitHub repository
-- Contact: nathan.richard.dev@gmail.com
-
-## 🔗 Related Projects
-
-- [VirtualDoc Frontend](https://github.com/Nathan-Richard-21/virtual-doc)
-- [VirtualDoc Documentation](https://virtual-doc-smoky.vercel.app/api)
+### Health
+- `GET /api/health` - Health check endpoint
 - `GET /api/test-db` - Test database connection
 
 ## User Schema
