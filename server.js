@@ -58,16 +58,21 @@ const mongooseOptions = {
   bufferCommands: false
 };
 
-// Connect to MongoDB
-if (mongoose.connection.readyState === 0) {
-  mongoose.connect(MONGODB_URI, mongooseOptions)
-    .then(() => {
+// Connect to MongoDB with proper error handling for serverless
+async function connectDB() {
+  if (mongoose.connection.readyState === 0) {
+    try {
+      await mongoose.connect(MONGODB_URI, mongooseOptions);
       console.log('✅ Connected to MongoDB successfully');
-    })
-    .catch((error) => {
+    } catch (error) {
       console.error('❌ MongoDB connection error:', error);
-    });
+      throw error;
+    }
+  }
 }
+
+// Initialize connection
+connectDB().catch(console.error);
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -478,6 +483,11 @@ app.get('/api/health', (req, res) => {
 // Test database connection endpoint
 app.get('/api/test-db', async (req, res) => {
   try {
+    // Ensure connection is established
+    if (mongoose.connection.readyState === 0) {
+      await connectDB();
+    }
+
     const dbState = mongoose.connection.readyState;
     const states = {
       0: 'disconnected',
